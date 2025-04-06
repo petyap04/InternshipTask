@@ -8,16 +8,33 @@ TESTS=(
 '{"origin": "NYC", "destination": "SOF"}'
 '{"origin": "SOF", "destination": "NYC"}'
 '{"origin": "SOF", "destination": "NYC", "maxFlights": 2}'
+'{"origin": "SOF", "destination": "NYC", "maxFlights": 0}'
 '{"origin": "SOF", "destination": "FRA"}'
+'{"origin": "IST", "destination": "NYC", "maxFlights": 3}'
+'{"origin": "AUH", "destination": "SOF", "maxFlights": 5}'
+'{"origin": "SOF", "destination": "SOF"}'
+'{"origin": "SOF", "destination": "SOF", "maxFlights": 0}'
 )
 
 DESCRIPTIONS=(
-"Expected: SOF → IST, price 10"
-"Expected: SOF → IST → CMB → MLE, total price 70"
-"Expected: No path available from NYC to SOF"
-"Expected: Two paths to NYC: SOF→FRA→NYC (130), SOF→LHR→NYC (130)"
-"Expected: Same two paths, both with 2 flights (<= maxFlights=2)"
-"Expected: SOF→FRA (30) and SOF→IST→FRA (45); no loops allowed"
+"Expected: SOF -> IST, price 10"
+"Expected: SOF -> IST -> CMB -> MLE, price 70"
+"Expected: []"
+"Expected: SOF -> FRA -> NYC, price 130
+                  SOF -> LHR -> NYC, price 130
+                  SOF -> FRA -> LHR -> NYC, price 135
+                  SOF -> IST -> FRA -> NYC, price 145
+                  SOF -> IST -> FRA -> LHR -> NYC, price 150"
+"Expected: SOF -> FRA -> NYC, price 130
+                  SOF -> LHR -> NYC, price 130"
+"Expected: []"
+"Expected: SOF -> FRA, price 30
+                  SOF -> IST -> FRA, price 45"
+"Expected: IST → FRA → NYC, price 135
+                  IST → FRA → LHR → NYC, price 140"
+"Expected: []"
+"Expected: SOF, price 0"
+"Expected: []"
 )
 
 for i in "${!TESTS[@]}"; do

@@ -84,6 +84,9 @@ std::vector<path_and_price_to_destination> FlightAPI::getFlights(const std::stri
 	std::set<std::string> visited;
 	std::vector<std::string> path;
 	size_t currPrice = 0, currDepth = 0;
+	if (origin == destination) {
+		return result;
+	}
 	dfs(result, origin, destination, visited, path, currPrice, currDepth);
 	std::sort(result.begin(), result.end(), [](const auto& a, const auto& b) {
 		return a.second < b.second;
