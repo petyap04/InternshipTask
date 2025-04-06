@@ -1,0 +1,3 @@
+C:/Users/user/Desktop/InternshipTask/build/CMakeFiles/InternshipTask.dir
+C:/Users/user/Desktop/InternshipTask/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/user/Desktop/InternshipTask/build/CMakeFiles/ZERO_CHECK.dir
