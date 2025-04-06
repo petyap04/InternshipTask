@@ -1,11 +1,12 @@
-#include "REST_JSON_API.h"
+#include "jsonFlightParser.h"
 #include <iostream>
 #include <optional>
 #include "json.hpp"
 using json = nlohmann::json;
 
-std::pair<std::string, std::string> REST_JSON_API::parseFromJson(const std::string& body, std::optional<int>& maxFlights)
+jsonFlightParser::ParsedRecord jsonFlightParser::parseFromJson(const std::string& body)
 {
+    ParsedRecord record;
     json j;
     try
     {
@@ -15,6 +16,16 @@ std::pair<std::string, std::string> REST_JSON_API::parseFromJson(const std::stri
     {
         throw std::invalid_argument("Invalid JSON");
     }
+
+    for (auto it = j.begin(); it != j.end(); ++it)
+    {
+        const std::string& key = it.key();
+        if (key != "origin" && key != "destination" && key != "maxFlights")
+        {
+            throw std::invalid_argument("Unexpected field: " + key);
+        }
+    }
+
     if (!j.contains("origin") || !j.contains("destination"))
     {
         throw std::invalid_argument("Missing 'origin' or 'destination'");
@@ -29,13 +40,15 @@ std::pair<std::string, std::string> REST_JSON_API::parseFromJson(const std::stri
         {
             throw std::invalid_argument("'maxFlights' must be an integer");
         }
-        maxFlights = j["maxFlights"];
+        record.maxFlights = j["maxFlights"];
     }
-    return { j["origin"], j["destination"] };
+    record.origin = j["origin"];
+    record.destination = j["destination"];
+    return record;
 }
 
 
-std::string REST_JSON_API::toJson(const std::vector<std::pair<std::vector<std::string>, size_t>> flights)
+std::string jsonFlightParser::toJson(const std::vector<std::pair<std::vector<std::string>, size_t>> flights)
 {
     json j = json::array();
     for (const auto& flight : flights)
