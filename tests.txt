@@ -21,14 +21,14 @@
     }
   },
   {
-    "description": "Expected: SOF -> FRA -> NYC, price 130\n SOF -> LHR -> NYC, price 130\n SOF → FRA → LHR → NYC, price 135 \n SOF → IST → FRA → NYC, price 145\n SOF → IST → FRA → LHR → NYC, price 150\n"
+    "description": "Expected: SOF -> FRA -> NYC, price 130\nSOF -> LHR -> NYC, price 130\nSOF -> FRA -> LHR -> NYC, price 135\nSOF -> IST -> FRA -> NYC, price 145\nSOF -> IST -> FRA -> LHR -> NYC, price 150",
     "request": {
       "origin": "SOF",
       "destination": "NYC"
     }
   },
   {
-    "description": "Expected: SOF -> FRA -> NYC, price 130\n SOF -> LHR -> NYC, price 130\n"
+    "description": "Expected: SOF -> FRA -> NYC, price 130\nSOF -> LHR -> NYC, price 130",
     "request": {
       "origin": "SOF",
       "destination": "NYC",
@@ -36,10 +36,42 @@
     }
   },
   {
-    "description": "Expected: SOF -> FRA, price 30\n SOF -> IST -> FRA, price 45\n",
+    "description": "Expected: []",
+    "request": {
+      "origin": "SOF",
+      "destination": "NYC",
+      "maxFlights": 0
+    }
+  },
+  {
+    "description": "Expected: SOF -> FRA, price 30\nSOF -> IST -> FRA, price 45",
     "request": {
       "origin": "SOF",
       "destination": "FRA"
+    }
+  },
+  {
+    "description": "Expected: IST -> FRA -> NYC, price 135\nIST -> FRA -> LHR -> NYC, price 140",
+    "request": {
+      "origin": "IST",
+      "destination": "NYC",
+      "maxFlights": 3
+    }
+  },
+  {
+    "description": "Expected: []",
+    "request": {
+      "origin": "AUH",
+      "destination": "SOF",
+      "maxFlights": 5
+    }
+  },
+  {
+    "description": "Expected: []",
+    "request": {
+      "origin": "SOF",
+      "destination": "SOF",
+      "maxFlights": 0
     }
   }
 ]
