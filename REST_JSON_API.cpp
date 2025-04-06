@@ -4,26 +4,36 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-std::pair<std::string, std::string> REST_JSON_API::parseFromJson(const std::string& request, std::optional<int>& max_flights)
+std::pair<std::string, std::string> REST_JSON_API::parseFromJson(const std::string& body, std::optional<int>& maxFlights)
 {
-    auto j = json::parse(request);
-    std::pair<std::string, std::string> result({ j["origin"], j["destination"] });
-
-    if (j.contains("maxFlights") && j["maxFlights"].is_number_integer()) {
-        int curr = j["maxFlights"];
-        if (curr < 0) {
-            std::cerr << "The value has to be positive!" << std::endl;
-        }
-        else {
-            max_flights = curr;
-        }
+    json j;
+    try
+    {
+        j = json::parse(body);
     }
-    else {
-        max_flights = std::nullopt;
+    catch (...)
+    {
+        throw std::invalid_argument("Invalid JSON");
     }
-
-    return result;
+    if (!j.contains("origin") || !j.contains("destination"))
+    {
+        throw std::invalid_argument("Missing 'origin' or 'destination'");
+    }
+    if (!j["origin"].is_string() || !j["destination"].is_string())
+    {
+        throw std::invalid_argument("'origin' and 'destination' must be strings");
+    }
+    if (j.contains("maxFlights"))
+    {
+        if (!j["maxFlights"].is_number_integer())
+        {
+            throw std::invalid_argument("'maxFlights' must be an integer");
+        }
+        maxFlights = j["maxFlights"];
+    }
+    return { j["origin"], j["destination"] };
 }
+
 
 std::string REST_JSON_API::toJson(const std::vector<std::pair<std::vector<std::string>, size_t>> flights)
 {

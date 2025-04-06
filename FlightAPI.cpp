@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <sstream>
 #include <string>
 #include <queue>
 #include "FlightAPI.h"
@@ -19,14 +20,29 @@ void FlightAPI::readFromFile(std::istream& ifs)
 	}
 }
 
-FlightAPI::FlightAPI(const std::string& filename)
+FlightAPI::FlightAPI(const std::string& filePath)
 {
-	std::ifstream ifs(filename.c_str());
-	if (!ifs.is_open())
+	std::ifstream file(filePath);
+	if (!file.is_open())
 	{
-		throw std::runtime_error("The file failed to open!");
+		throw std::runtime_error("Cannot open flights file: " + filePath);
 	}
-	readFromFile(ifs);
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::istringstream iss(line);
+		std::string from, to;
+		int cost;
+
+		if (std::getline(iss, from, ',') && std::getline(iss, to, ',') && (iss >> cost))
+		{
+			flights[from].push_back({ to, cost });
+		}
+		else
+		{
+			throw std::runtime_error("Invalid format in flights file");
+		}
+	}
 }
 
 void FlightAPI::dfs(std::vector<path_and_price_to_destination>& result, const std::string& curr, const std::string& destination,
@@ -61,6 +77,9 @@ void FlightAPI::dfs(std::vector<path_and_price_to_destination>& result, const st
 
 std::vector<path_and_price_to_destination> FlightAPI::getFlights(const std::string& origin, const std::string& destination)
 {
+	if (flights.find(origin) == flights.end()) {
+		throw std::invalid_argument("Origin '" + origin + "' not found in data");
+	}
 	std::vector<path_and_price_to_destination> result;
 	std::set<std::string> visited;
 	std::vector<std::string> path;

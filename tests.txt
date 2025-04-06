@@ -1,34 +1,34 @@
 [
   {
-    "description": "Expected: Direct path: SOF -> IST, price 10",
+    "description": "Expected: SOF -> IST, price 10",
     "request": {
       "origin": "SOF",
       "destination": "IST"
     }
   },
   {
-    "description": "Expected: SOF -> IST -> CMB -> MLE, price 10+20+40=70",
+    "description": "Expected: SOF -> IST -> CMB -> MLE, price 70",
     "request": {
       "origin": "SOF",
       "destination": "MLE"
     }
   },
   {
-    "description": "Expected: No path available",
+    "description": "Expected: []",
     "request": {
       "origin": "NYC",
       "destination": "SOF"
     }
   },
   {
-    "description": "Expected: Two paths:\n1. SOF -> FRA -> NYC, price 30+100=130\n2. SOF -> LHR -> NYC, price 50+80=130",
+    "description": "Expected: SOF -> FRA -> NYC, price 130\n SOF -> LHR -> NYC, price 130\n SOF → FRA → LHR → NYC, price 135 \n SOF → IST → FRA → NYC, price 145\n SOF → IST → FRA → LHR → NYC, price 150\n"
     "request": {
       "origin": "SOF",
       "destination": "NYC"
     }
   },
   {
-    "description": "Expected: Same two paths, both are 2 flights long",
+    "description": "Expected: SOF -> FRA -> NYC, price 130\n SOF -> LHR -> NYC, price 130\n"
     "request": {
       "origin": "SOF",
       "destination": "NYC",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "description": "Expected: Direct: SOF -> FRA (30),\nAlso via: SOF -> IST -> FRA (10+35=45)\nShould prevent loop (FRA -> IST -> FRA...)",
+    "description": "Expected: SOF -> FRA, price 30\n SOF -> IST -> FRA, price 45\n",
     "request": {
       "origin": "SOF",
       "destination": "FRA"
