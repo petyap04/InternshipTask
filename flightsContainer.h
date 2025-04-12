@@ -16,9 +16,7 @@ public:
 	flightsContainer() = default;
 	flightsContainer(const std::string& filename);
 
-	std::vector<path_and_price_to_destination> getSolutions(const std::string& origin,
-														    const std::string& destination,
-														    const std::optional<int>& maxFlights);
+	std::vector<path_and_price_to_destination> getSolutions(const std::string& origin, const std::string& destination, const std::optional<int>& maxFlights);
 private:
 	map_with_flights flights;
 
